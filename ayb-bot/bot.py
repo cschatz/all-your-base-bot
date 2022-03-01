@@ -77,7 +77,7 @@ class AllYourBASEBot(Client):
             self.send_message("You need to give me a file path!")
         else:
             self.send_message(
-                f"I see that you are **{voice_channel}** voice channel."
+                f"I see that you are in **{voice_channel}**."
             )
             path = " ".join(args)
             self.send_message(
