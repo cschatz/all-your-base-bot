@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+
 import discord
+from quotations import FactQuotes, MemeQuotes
 
 # Bad practice! Needs to eventually
 # move to somewhere else local
@@ -6,37 +9,8 @@ TOKEN = "OTQwNDgxODgyOTEzNjQwNTA4.YgICAg.uecQGHPZq1TU5TJUZ7xfE3cewg4"
 
 client = discord.Client()
 
-
-class QuoteFactory:
-    def __init__(self, quotes):
-        self.quotes = quotes
-        self.index = -1
-
-    def next(self):
-        self.index = (self.index + 1) % len(self.quotes)
-        return self.quotes[self.index]
-
-
-memes = QuoteFactory([
-    "Somebody set up us the bomb.",
-    "Main screen turn on.",
-    "All your base are belong to us.",
-    "You have no chance to survive make your time.",
-    "Move ZIG for great justice."
-])
-
-facts = QuoteFactory([
-    "Dental floss has superb tensile strength.",
-    "The square root of rope is string.",
-    "Humans can survive underwater. But not for very long."
-    "According to most advanced algorithms, the world's best name is Craig.",
-    "This situation is hopeless."
-    "Tungsten has the highest melting point of any metal."
-    "Before the invention of scrambled eggs in 1912, the typical breakfast "
-    "was either whole eggs still in the shell or scrambled rocks.",
-    "In Greek myth, the craftsman Daedalus invented human flight so a group "
-    "of Minotaurs would stop teasing him about it.",
-])
+facts = FactQuotes()
+memes = MemeQuotes()
 
 
 async def show_help(channel):
@@ -84,6 +58,4 @@ async def on_message(message):
             # ".base [somethinng]"
             await respond(message.channel, message.content[6:])
 
-# client.run(TOKEN)
-
-f = Foo()
+client.run(TOKEN)
