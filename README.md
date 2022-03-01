@@ -31,3 +31,10 @@ Launch the bot from within the root of the project directory with:
 ```
 python3 ayb-bot
 ```
+
+Note that if you want to store logging information, you need to invoke Python
+with the "unbuffered" (-u) switch:
+
+```
+python3 -u ayb-bot >& your_log_file
+```
