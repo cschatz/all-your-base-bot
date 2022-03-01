@@ -1,4 +1,5 @@
 import discord
+from configparser import ConfigParser
 
 from quotation.collections import (
     FactQuotes,
@@ -7,10 +8,17 @@ from quotation.collections import (
 
 
 class AllYourBASEBot(discord.Client):
-    def __init__(self):
+    def __init__(self, ini_file):
         super().__init__()
         self.facts = FactQuotes()
         self.memes = MemeQuotes()
+        parser = ConfigParser()
+        parser.read(ini_file)
+        self.token = parser.get("discord", "bot_token")
+
+    def run(self):
+        print("HERE")
+        super().run(self.token)
 
     async def on_ready(self):
         print(f"We have logged in as {self.user}")
