@@ -3,13 +3,13 @@ from .quote_factory import QuoteFactory
 FACTS = [
     "Dental floss has superb tensile strength.",
     "The square root of rope is string.",
-    "Humans can survive underwater. But not for very long."
+    "Humans can survive underwater. But not for very long.",
     "According to most advanced algorithms, the world's best name is Craig.",
-    "This situation is hopeless."
-    "Tungsten has the highest melting point of any metal."
-    "Before the invention of scrambled eggs in 1912, the typical breakfast "
+    "This situation is hopeless.",
+    "Tungsten has the highest melting point of any metal.",
+    "Before the invention of scrambled eggs in 1912, the typical breakfast ",
     "was either whole eggs still in the shell or scrambled rocks.",
-    "In Greek myth, the craftsman Daedalus invented human flight so a group "
+    "In Greek myth, the craftsman Daedalus invented human flight so a group ",
     "of Minotaurs would stop teasing him about it.",
 ]
 
