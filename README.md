@@ -21,7 +21,7 @@ brew install opus
 
 ## Configuration
 
-Before running the bot, copy the `ayb.skeleton.ini` file into a new file named
+Before running the bot, copy the `ayb-skeleton.ini` file into a new file named
 `ayb.ini`. Fill in each entry with real values, including your Discord bot token
 and the path to the FFmpeg executable you downloaded.
 

@@ -26,8 +26,10 @@ class AllYourBASEBot(Client):
         parser.read(ini_file)
         self.token = parser.get("discord", "bot_token")
         self.ffmpg_app = parser.get("local", "ffmpeg_executable")
+        self.music_dir = parser.get("local", "music_directory")
 
     async def on_ready(self):
+        """Set activity so users see 'listening to .base'"""
         print(f"Logged in as {self.user}")
         listening_activity = Activity(
             type=ActivityType.listening,
@@ -36,23 +38,28 @@ class AllYourBASEBot(Client):
         await self.change_presence(activity=listening_activity)
 
     async def on_message(self, message):
+        """Check any message posted, respond if it begins with .base"""
         if message.author == self.user:
             return
-        self.channel = message.channel
-        self.author = message.author
         if (request := message.content).startswith('.base'):
             tokens = request.split(" ")
             if tokens[0] != ".base":
                 print(f"We ignored a possible request '{message.content}'")
-            elif len(tokens) == 1:
-                self.show_help()
             else:
-                self.handle_request(message.author, tokens[1:])
+                # Save most recent channel and author (sender) in instance vars
+                self.channel = message.channel
+                self.author = message.author
+                if len(tokens) == 1:
+                    self.show_help()
+                else:
+                    self.handle_request(message.author, tokens[1:])
 
     def run(self):
+        """Start the bot"""
         super().run(self.token)
 
     def send_message(self, message):
+        """Send any message on a given channel"""
         asyncio.create_task(self.channel.send(message))
 
     def report_error(self, message):
@@ -70,31 +77,35 @@ class AllYourBASEBot(Client):
             self.show_help()
 
     def handle_music(self, args):
+        """Validate a music request, possibly initiating the playing of a
+        particular file in a voice channel the sender has already joined"""
         voice = self.author.voice
         if not voice or not (voice_channel := voice.channel):
             self.send_message("You need to be in a voice channel first!")
         elif not args:
             self.send_message("You need to give me a file path!")
         else:
-            self.send_message(
-                f"I see that you are in **{voice_channel}**."
-            )
-            path = " ".join(args)
-            self.send_message(
-                f"I will now try to play music from local path '{path}'")
-            # check path separately because the FFmpegPCMAudio constructor
-            # otherwise does funky subprocess stuff that makes any error go
-            # straight to stderr
+            # User may have typed a multi-word filename
+            filename = " ".join(args)
+            # Doing an initial check of the path because the FFmpegPCMAudio
+            # constructor annoyingly won't raise an exception on invalid
+            # path/file. Instead it spawns a subprocess and will send any error
+            # straight to stderr.
+            path = f"{self.music_dir}/{filename}"
             if not os.path.isfile(path):
-                self.report_error(f"The path '{path}' is not valid.")
+                self.report_error(f"I'm sorry, I could not find {path}.")
             else:
                 audio = FFmpegPCMAudio(
                     executable=self.ffmpg_app,
                     source=path
                 )
+                self.send_message(
+                    f"Ok, I will try to play **{filename}** in **{voice_channel}**"
+                )
                 asyncio.create_task(self.play_music(voice_channel, audio))
 
     async def play_music(self, user_voice_channel, audio):
+        """Start playing the given audio"""
         if not self.voice_clients:  # bot is not in a voice channel yet
             voice_client = await user_voice_channel.connect()
         else:
