@@ -1,4 +1,4 @@
-# AllYourBASE Bot
+# AllYourBase Bot
 
 This repo contains the source code for the AllYourBase bot.
 
