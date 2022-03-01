@@ -17,8 +17,13 @@ python3 -m pip install -U discord.py[voice]
 brew install opus
 ```
 
-(3) The FFmpeg application -- download from https://www.ffmpeg.org/download.html, then
-edit the `ayb.ini` file to indicate the path to the ffmpeg exectuable.
+(3) The FFmpeg application -- download from https://www.ffmpeg.org/download.html.
+
+## Configuration
+
+Before running the bot, copy the `ayb.skeleton.ini` file into a new file named
+`ayb.ini`. Fill in each entry with real values, including your Discord bot token
+and the path to the FFmpeg executable you downloaded.
 
 ## Running the Bot
 
